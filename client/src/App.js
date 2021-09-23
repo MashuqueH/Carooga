@@ -1,58 +1,30 @@
-import React from "react";
-import logo from "./logo.svg";
-import { Counter } from "./features/counter/Counter";
-import "./App.css";
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
-function App() {
-    return (
-        <div className='App'>
-            <header className='App-header'>
-                <img src={logo} className='App-logo' alt='logo' />
-                <Counter />
-                <p>
-                    Edit <code>src/App.js</code> and save to reload.
-                </p>
-                <span>
-                    <span>Learn </span>
-                    <a
-                        className='App-link'
-                        href='https://reactjs.org/'
-                        target='_blank'
-                        rel='noopener noreferrer'
-                    >
-                        React
-                    </a>
-                    <span>, </span>
-                    <a
-                        className='App-link'
-                        href='https://redux.js.org/'
-                        target='_blank'
-                        rel='noopener noreferrer'
-                    >
-                        Redux
-                    </a>
-                    <span>, </span>
-                    <a
-                        className='App-link'
-                        href='https://redux-toolkit.js.org/'
-                        target='_blank'
-                        rel='noopener noreferrer'
-                    >
-                        Redux Toolkit
-                    </a>
-                    ,<span> and </span>
-                    <a
-                        className='App-link'
-                        href='https://react-redux.js.org/'
-                        target='_blank'
-                        rel='noopener noreferrer'
-                    >
-                        React Redux
-                    </a>
-                </span>
-            </header>
-        </div>
-    );
-}
+// Functions
+import { getAllVehicles } from "./store/actions/vehicles";
 
-export default App;
+// Components
+
+const App = ({ loading, vehicles, getAllVehicles }) => {
+    useEffect(() => {
+        getAllVehicles();
+    }, [getAllVehicles]);
+
+    return <></>;
+};
+
+App.propTypes = {
+    vehicles: PropTypes.array,
+    loading: PropTypes.bool,
+    getAllVehicles: PropTypes.func.isRequired,
+};
+
+export default connect(
+    (state) => ({
+        loading: state.vehicles.loading,
+        vehicles: state.vehicles.vehicles,
+    }),
+    { getAllVehicles }
+)(App);

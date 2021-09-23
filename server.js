@@ -4,6 +4,9 @@ const path = require("path");
 
 const app = express();
 
+// Init middleware
+app.use(express.json());
+
 // Connect to MongoDB
 connectDB();
 

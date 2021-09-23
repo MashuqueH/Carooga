@@ -25,9 +25,10 @@ const VehicleSchema = new Schema({
         type: Date,
         default: Date.now,
     },
-    sold: {
-        type: Boolean,
-        default: false,
+    status: {
+        type: String,
+        value: ['Live', 'Sold'],
+        default: 'Live',
     },
 });
 
