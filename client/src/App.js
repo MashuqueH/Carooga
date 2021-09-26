@@ -26,16 +26,6 @@ const App = ({ loading, vehicles, getAllVehicles }) => {
         setMobileOpen(!mobileOpen);
     };
 
-    // return (
-    //     <Box display='flex' justifyContent='center' alignItems='center'>
-    //         {loading ? (
-    //             <CircularProgress />
-    //         ) : (
-    //             <VehiclesTable vehicles={vehicles} />
-    //         )}
-    //     </Box>
-    // );
-
     return (
         <Box sx={{ display: "flex" }}>
             <CssBaseline />

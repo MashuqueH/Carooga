@@ -1,7 +1,10 @@
 import axios from "axios";
 
 export const GET_ALL_VEHICLES = "GET_ALL_VEHICLES";
-export const GET_ALL_VEHICLES_ERROR = "GET_ALL_VEHICLES_ERROR";
+export const UPDATE_VEHICLE = "UPDATE_VEHICLE";
+export const NEW_VEHICLE = "NEW_VEHICLE";
+export const TOGGLE_STATUS = "TOGGLE_STATUS";
+export const VEHICLES_ERROR = "VEHICLES_ERROR";
 
 export const getAllVehicles = () => async (dispatch) => {
     try {
@@ -11,7 +14,37 @@ export const getAllVehicles = () => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        dispatch({ type: GET_ALL_VEHICLES_ERROR });
+        dispatch({ type: VEHICLES_ERROR });
+        console.error(error);
+    }
+};
+
+export const newVehicle = (vehicle) => async (dispatch) => {
+    try {
+        const { data } = await axios.post(`/api/vehicles`, vehicle);
+        dispatch({ type: NEW_VEHICLE, payload: data });
+    } catch (error) {
+        dispatch({ type: VEHICLES_ERROR });
+        console.error(error);
+    }
+};
+
+export const updateVehicle = (vehicle) => async (dispatch) => {
+    try {
+        const { data } = await axios.put(`/api/vehicles`, vehicle);
+        dispatch({ type: UPDATE_VEHICLE, payload: data });
+    } catch (error) {
+        dispatch({ type: VEHICLES_ERROR });
+        console.error(error);
+    }
+};
+
+export const toggleStatus = (id, status) => async (dispatch) => {
+    try {
+        const { data } = await axios.patch(`/api/vehicles/${id}`, status);
+        dispatch({ type: TOGGLE_STATUS, payload: data });
+    } catch (error) {
+        dispatch({ type: VEHICLES_ERROR });
         console.error(error);
     }
 };

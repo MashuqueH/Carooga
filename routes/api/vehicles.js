@@ -9,7 +9,7 @@ const { body, validationResult } = require("express-validator");
 router.get("/", async (req, res) => {
     try {
         console.log("GET api/vehicles");
-        const vehicles = await Vehicle.find();
+        const vehicles = await Vehicle.find().sort("-created");
         res.json(vehicles);
     } catch (err) {
         console.error(err.message);
@@ -33,16 +33,38 @@ router.post("/", async (req, res) => {
     }
 });
 
+// @route   PUT api/vehicles
+// @desc    Update a vehicle listing
+// @access  Public
+router.put("/", async (req, res) => {
+    try {
+        console.log("PUT api/vehicles");
+        const updatedVehicle = await Vehicle.findByIdAndUpdate(
+            req.body._id,
+            req.body,
+            {
+                new: true,
+            }
+        );
+        res.json(updatedVehicle);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send("Server error");
+    }
+});
+
 // @route   PATCH api/vehicles/:id
-// @desc    Update a vehicle listing by id
+// @desc    Mark a vehicle as sold or live
 // @access  Public
 router.patch("/:id", async (req, res) => {
     try {
-        console.log(req.params.id);
-        // res.sendStatus(200);
+        console.log("PATCH api/vehicles/:id");
+
         const updatedVehicle = await Vehicle.findByIdAndUpdate(
             req.params.id,
-            req.body,
+            {
+                status: req.body.status === "Sold" ? "Live" : "Sold",
+            },
             {
                 new: true,
             }
