@@ -10,12 +10,15 @@ import VehicleInfo from "./VehicleInfo";
 import Button from "@mui/material/Button";
 import ModalFooter from "./ModalFooter";
 import ModalHeader from "./ModalHeader";
-
+import AlertLayout from "../../layout/alert/AlertLayout";
+import Loading from "../../layout/Loading";
 import {
     newVehicle,
     updateVehicle,
     toggleStatus,
-} from "../../store/actions/vehicles";
+} from "../../../store/actions/vehicles";
+
+import { removeAlerts } from "../../../store/actions/alerts";
 
 const style = {
     position: "absolute",
@@ -23,7 +26,8 @@ const style = {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: "50%",
-    minWidth: "340px",
+    minWidth: 340,
+    minHeight: 500,
     bgcolor: "background.paper",
     boxShadow: 24,
     p: 4,
@@ -38,19 +42,22 @@ const initialState = {
 };
 
 function VehicleModal({
+    loading,
     isNew,
     vehicle,
     newVehicle,
     updateVehicle,
     toggleStatus,
+    removeAlerts,
 }) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
         setOpen(true);
         setVehicleInfo(vehicle);
     };
-    const handleClose = () => {
+    const handleClose = (e) => {
         setOpen(false);
+        removeAlerts("vehicle_modal");
     };
 
     const [vehicleInfo, setVehicleInfo] = useState(vehicle);
@@ -74,7 +81,7 @@ function VehicleModal({
     };
 
     return (
-        <div>
+        <Box>
             {isNew ? (
                 <Button variant='contained' onClick={handleOpen}>
                     Add New Vehicle
@@ -92,26 +99,35 @@ function VehicleModal({
                 onBackdropClick='false'
             >
                 <Box sx={style}>
-                    <ModalHeader
-                        title={isNew ? "Add New Vehicle" : "Edit vehicle"}
-                        handleClose={handleClose}
-                    />
-                    <Divider />
-                    <form onSubmit={handleSubmit}>
-                        <VehicleInfo
-                            vehicle={vehicleInfo}
-                            handleChange={handleChange}
-                        />
-                        <Divider />
-                        <ModalFooter
-                            isNew={isNew}
-                            status={vehicle.status}
-                            handleMarkAsSold={handleToggleSold}
-                        />
-                    </form>
+                    {loading ? (
+                        <Loading />
+                    ) : (
+                        <>
+                            <AlertLayout type='vehicle_modal' />
+                            <ModalHeader
+                                title={
+                                    isNew ? "Add New Vehicle" : "Edit vehicle"
+                                }
+                                handleClose={handleClose}
+                            />
+                            <Divider />
+                            <form onSubmit={handleSubmit}>
+                                <VehicleInfo
+                                    vehicle={vehicleInfo}
+                                    handleChange={handleChange}
+                                />
+                                <Divider />
+                                <ModalFooter
+                                    isNew={isNew}
+                                    status={vehicle.status}
+                                    handleMarkAsSold={handleToggleSold}
+                                />
+                            </form>
+                        </>
+                    )}
                 </Box>
             </Modal>
-        </div>
+        </Box>
     );
 }
 
@@ -121,13 +137,23 @@ VehicleModal.defaultProps = {
 };
 
 VehicleModal.propTypes = {
-    isNew: PropTypes.bool.isRequired,
+    loading: PropTypes.bool,
+    isNew: PropTypes.bool,
     vehicle: PropTypes.object,
     newVehicle: PropTypes.func,
     updateVehicle: PropTypes.func,
     toggleStatus: PropTypes.func,
+    removeAlerts: PropTypes.func,
 };
 
-export default connect(null, { newVehicle, updateVehicle, toggleStatus })(
-    VehicleModal
-);
+export default connect(
+    (state) => ({
+        loading: state.vehicles.loading,
+    }),
+    {
+        newVehicle,
+        updateVehicle,
+        toggleStatus,
+        removeAlerts,
+    }
+)(VehicleModal);

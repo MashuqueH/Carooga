@@ -4,12 +4,12 @@ import { connect } from "react-redux";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
-import VehiclesTable from "./components/VehiclesTable";
+import VehiclesTable from "./components/vehicle/VehiclesTable";
 import CssBaseline from "@mui/material/CssBaseline";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
-import DrawerContainer from "./components/drawer/DrawerContainer";
+import DrawerContainer from "./components/layout/drawer/DrawerContainer";
 
 import { getAllVehicles } from "./store/actions/vehicles";
 
@@ -61,11 +61,7 @@ const App = ({ loading, vehicles, getAllVehicles }) => {
             </Box>
             <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
                 <Toolbar />
-                {loading ? (
-                    <CircularProgress />
-                ) : (
-                    <VehiclesTable vehicles={vehicles} />
-                )}
+                <VehiclesTable vehicles={vehicles} />
             </Box>
         </Box>
     );

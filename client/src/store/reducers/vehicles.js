@@ -1,4 +1,6 @@
 import {
+    SET_LOADING,
+    REMOVE_LOADING,
     GET_ALL_VEHICLES,
     NEW_VEHICLE,
     UPDATE_VEHICLE,
@@ -14,6 +16,18 @@ export default function vehiclesReducer(state = initialState, action) {
     const { type, payload } = action;
 
     switch (type) {
+        case SET_LOADING: {
+            return {
+                ...state,
+                loading: true,
+            };
+        }
+        case REMOVE_LOADING: {
+            return {
+                ...state,
+                loading: false,
+            };
+        }
         case GET_ALL_VEHICLES:
             return {
                 loading: false,
@@ -22,6 +36,7 @@ export default function vehiclesReducer(state = initialState, action) {
         case NEW_VEHICLE: {
             return {
                 ...state,
+                loading: false,
                 vehicles: [payload, ...state.vehicles],
             };
         }
@@ -29,6 +44,7 @@ export default function vehiclesReducer(state = initialState, action) {
         case TOGGLE_STATUS:
             return {
                 ...state,
+                loading: false,
                 vehicles: state.vehicles.map((vehicle) =>
                     vehicle._id === payload._id ? { ...payload } : vehicle
                 ),
