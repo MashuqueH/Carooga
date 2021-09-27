@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import CircularProgress from "@mui/material/CircularProgress";
-import VehiclesTable from "./components/vehicle/VehiclesTable";
+import VehiclesTable from "./components/vehicle/table/VehiclesTable";
 import CssBaseline from "@mui/material/CssBaseline";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -12,11 +11,10 @@ import Toolbar from "@mui/material/Toolbar";
 import DrawerContainer from "./components/layout/drawer/DrawerContainer";
 
 import { getAllVehicles } from "./store/actions/vehicles";
-import VehiclesChart from "./components/vehicle/VehiclesChart";
 
 const drawerWidth = 240;
 
-const App = ({ loading, vehicles, getAllVehicles }) => {
+const App = ({ vehicles, getAllVehicles }) => {
     useEffect(() => {
         getAllVehicles();
     }, [getAllVehicles]);
@@ -61,7 +59,6 @@ const App = ({ loading, vehicles, getAllVehicles }) => {
             </Box>
             <Box component='main' sx={{ flexGrow: 1, p: 1 }}>
                 <Toolbar />
-                <VehiclesChart vehicles={vehicles} />
                 <VehiclesTable vehicles={vehicles} />
             </Box>
         </Box>
@@ -70,13 +67,11 @@ const App = ({ loading, vehicles, getAllVehicles }) => {
 
 App.propTypes = {
     vehicles: PropTypes.array,
-    loading: PropTypes.bool,
     getAllVehicles: PropTypes.func.isRequired,
 };
 
 export default connect(
     (state) => ({
-        loading: state.vehicles.loading,
         vehicles: state.vehicles.vehicles,
     }),
     { getAllVehicles }

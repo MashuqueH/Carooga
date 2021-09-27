@@ -13,7 +13,7 @@ function DrawerItems(props) {
             <Toolbar sx={{ boxShadow: 3, background: "#1976d2" }} />
             <Divider />
             <List>
-                <ListItem button key='Inventory'>
+                <ListItem button key='Inventory' selected>
                     <ListItemIcon>
                         <InventoryIcon />
                     </ListItemIcon>

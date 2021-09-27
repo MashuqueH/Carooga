@@ -10,6 +10,20 @@ export const TOGGLE_STATUS = "TOGGLE_STATUS";
 export const DELETE_VEHICLE = "DELETE_VEHICLE";
 export const VEHICLES_ERROR = "VEHICLES_ERROR";
 
+const dispatchError = (dispatch, error, alertColor, alertType) => {
+    dispatch({ type: VEHICLES_ERROR });
+    dispatch(
+        setAlert(
+            error.response
+                ? error.response.data.message
+                : "Server error. Please try again later",
+            alertColor,
+            alertType
+        )
+    );
+    console.error(error);
+};
+
 export const getAllVehicles = () => async (dispatch) => {
     try {
         const { data } = await axios.get("/api/vehicles");
@@ -18,8 +32,7 @@ export const getAllVehicles = () => async (dispatch) => {
             payload: data,
         });
     } catch (error) {
-        dispatch({ type: VEHICLES_ERROR });
-        console.error(error);
+        dispatchError(dispatch, error, "error", "vehicles_table");
     }
 };
 
@@ -32,15 +45,7 @@ export const newVehicle = (vehicle) => async (dispatch) => {
             setAlert("Vehicle added successfully", "success", "vehicle_modal")
         );
     } catch (error) {
-        dispatch({ type: VEHICLES_ERROR });
-        dispatch(
-            setAlert(
-                "There was an error adding the vehicle",
-                "error",
-                "vehicle_modal"
-            )
-        );
-        console.error(error);
+        dispatchError(dispatch, error, "error", "vehicles_modal");
     }
 };
 
@@ -53,15 +58,7 @@ export const updateVehicle = (vehicle) => async (dispatch) => {
             setAlert("Vehicle updated successfully", "success", "vehicle_modal")
         );
     } catch (error) {
-        dispatch({ type: VEHICLES_ERROR });
-        dispatch(
-            setAlert(
-                "There was an error updating the vehicle",
-                "error",
-                "vehicle_modal"
-            )
-        );
-        console.error(error);
+        dispatchError(dispatch, error, "error", "vehicles_modal");
     }
 };
 
@@ -78,15 +75,7 @@ export const toggleStatus = (id, status) => async (dispatch) => {
             )
         );
     } catch (error) {
-        dispatch({ type: VEHICLES_ERROR });
-        dispatch(
-            setAlert(
-                "There was an updating the vehicle status",
-                "error",
-                "vehicle_modal"
-            )
-        );
-        console.error(error);
+        dispatchError(dispatch, error, "error", "vehicles_modal");
     }
 };
 
@@ -103,14 +92,6 @@ export const deleteVehicle = (id) => async (dispatch) => {
             )
         );
     } catch (error) {
-        dispatch({ type: VEHICLES_ERROR });
-        console.error(error);
-        dispatch(
-            setAlert(
-                "There was an error removing the vehicle",
-                "error",
-                "vehicles_table"
-            )
-        );
+        dispatchError(dispatch, error, "error", "vehicles_table");
     }
 };

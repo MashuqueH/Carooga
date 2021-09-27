@@ -9,8 +9,9 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { deleteVehicle } from "../../store/actions/vehicles";
-import Loading from "../layout/Loading";
+import Loading from "../../layout/Loading";
+
+import { deleteVehicle } from "../../../store/actions/vehicles";
 
 function DeleteVehicle({ loading, id, deleteVehicle }) {
     const [open, setOpen] = React.useState(false);

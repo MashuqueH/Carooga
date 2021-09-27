@@ -17,7 +17,7 @@ const formatData = (vehicles) => {
     }
 
     return [
-        ["Status", "Count"],
+        ["", "Count"],
         ["Sold", numSold],
         ["Live", numLive],
     ];
@@ -31,19 +31,14 @@ function VehiclesChart({ vehicles }) {
     }, [setData, vehicles]);
 
     return (
-        <Box display='flex' justifyContent='center'>
+        <Box display='flex' justifyContent='center' sx={{ m: 1 }}>
             <Chart
-                width={300}
-                height={300}
+                width={250}
+                height={250}
                 chartType='Bar'
                 loader={<Loading />}
                 data={data}
                 options={{
-                    chart: {
-                        title: "Inventory Status",
-                        subtitle:
-                            "Number of sold and live vehicles in inventory",
-                    },
                     legend: { position: "none" },
                 }}
             />

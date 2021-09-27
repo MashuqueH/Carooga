@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Vehicle = require("../../models/Vehicle");
-const { body, validationResult } = require("express-validator");
+const { validateVehicle } = require("../../util/vehicleValidator");
 
 // @route   GET api/vehicles
 // @desc    Get a list of vehicles
@@ -12,10 +12,18 @@ router.get("/", async (req, res) => {
         const vehicles = await Vehicle.find().sort({
             no: 1,
         });
+
+        if (!vehicles) {
+            return res.status(400).json({
+                message:
+                    "There was an error retrieving the vehicles inventory. Please try again.",
+            });
+        }
+
         res.json(vehicles);
     } catch (err) {
         console.error(err.message);
-        res.status(500).send("Server error");
+        res.status(400).json({ message: "Server error" });
     }
 });
 
@@ -25,13 +33,22 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
     try {
         console.log("POST api/vehicles");
-        console.log(req.body);
+
+        validateVehicle(req.body);
 
         let newVehicle = await Vehicle.create(req.body);
+
+        if (!newVehicle) {
+            res.status(400).json({
+                message:
+                    "There was an error creating the vehicle listing. Please try again.",
+            });
+        }
+
         res.json(newVehicle);
     } catch (err) {
         console.error(err.message);
-        res.status(500).send("Server error");
+        res.status(400).json({ message: err.message });
     }
 });
 
@@ -41,6 +58,9 @@ router.post("/", async (req, res) => {
 router.put("/", async (req, res) => {
     try {
         console.log("PUT api/vehicles");
+
+        validateVehicle(req.body);
+
         const updatedVehicle = await Vehicle.findByIdAndUpdate(
             req.body._id,
             req.body,
@@ -48,10 +68,17 @@ router.put("/", async (req, res) => {
                 new: true,
             }
         );
+
+        if (!updatedVehicle) {
+            throw new Error(
+                "There was en error while updating the vehicle information. Please try again"
+            );
+        }
+
         res.json(updatedVehicle);
     } catch (err) {
         console.error(err.message);
-        res.status(500).send("Server error");
+        res.status(400).json({ message: err.message });
     }
 });
 
@@ -62,6 +89,15 @@ router.patch("/:id", async (req, res) => {
     try {
         console.log("PATCH api/vehicles/:id");
 
+        if (
+            !req.body.status ||
+            (req.body.status !== "Sold" && req.body.status !== "Live")
+        ) {
+            res.sendStatus(400).json({
+                message: "Vehicle status must be either 'Live' or 'Sold'",
+            });
+        }
+
         const updatedVehicle = await Vehicle.findByIdAndUpdate(
             req.params.id,
             {
@@ -71,10 +107,17 @@ router.patch("/:id", async (req, res) => {
                 new: true,
             }
         );
+
+        if (!updatedVehicle) {
+            throw new Error(
+                "There was en error while updating the vehicle information. Please try again"
+            );
+        }
+
         res.json(updatedVehicle);
     } catch (err) {
         console.error(err.message);
-        res.status(500).send("Server error");
+        res.status(400).json({ message: err.message });
     }
 });
 
@@ -87,7 +130,7 @@ router.delete("/:id", async (req, res) => {
         res.sendStatus(200);
     } catch (err) {
         console.error(err.message);
-        res.status(500).send("Server error");
+        res.status(500).json({ message: err.message });
     }
 });
 

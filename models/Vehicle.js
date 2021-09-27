@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const AutoIncrement = require("mongoose-sequence")(mongoose);
 const Schema = mongoose.Schema;
-
+const { validYear } = require("../util/vehicleValidator");
 const VehicleSchema = new Schema({
     make: {
         type: String,
@@ -17,10 +17,15 @@ const VehicleSchema = new Schema({
         type: Number,
         required: true,
         trim: true,
+        min: [1900, "Please enter a valid year"],
+        max: [validYear, "Please enter a valid year"],
     },
     price: {
         type: Number,
         required: true,
+        trim: true,
+        min: [1, "Please enter a valid price"],
+        max: [10 ** 7, "Please enter a valid price"],
     },
     created: {
         type: Date,
@@ -28,8 +33,10 @@ const VehicleSchema = new Schema({
     },
     status: {
         type: String,
+        trim: true,
         value: ["Live", "Sold"],
         default: "Live",
+        required: () => this.status === "Live" || this.staus === "Sold",
     },
 });
 
