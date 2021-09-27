@@ -4,8 +4,7 @@ import Drawer from "@mui/material/Drawer";
 import DrawerItems from "./DrawerItems";
 
 function DrawerContainer({ mobileOpen, handleDrawerToggle, drawerWidth }) {
-    const container =
-        window !== undefined ? () => window.document.body : undefined;
+    const container = window?.document.body;
 
     return (
         <Box
@@ -13,14 +12,13 @@ function DrawerContainer({ mobileOpen, handleDrawerToggle, drawerWidth }) {
             sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
             aria-label='mailbox folders'
         >
-            {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
             <Drawer
                 container={container}
                 variant='temporary'
                 open={mobileOpen}
                 onClose={handleDrawerToggle}
                 ModalProps={{
-                    keepMounted: true, // Better open performance on mobile.
+                    keepMounted: true,
                 }}
                 sx={{
                     display: { xs: "block", sm: "none" },
@@ -41,7 +39,6 @@ function DrawerContainer({ mobileOpen, handleDrawerToggle, drawerWidth }) {
                         width: drawerWidth,
                     },
                 }}
-                open
             >
                 <DrawerItems />
             </Drawer>

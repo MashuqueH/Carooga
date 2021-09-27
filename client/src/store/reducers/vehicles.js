@@ -5,6 +5,8 @@ import {
     NEW_VEHICLE,
     UPDATE_VEHICLE,
     TOGGLE_STATUS,
+    DELETE_VEHICLE,
+    VEHICLES_ERROR,
 } from "../actions/vehicles";
 
 const initialState = {
@@ -37,7 +39,7 @@ export default function vehiclesReducer(state = initialState, action) {
             return {
                 ...state,
                 loading: false,
-                vehicles: [payload, ...state.vehicles],
+                vehicles: [...state.vehicles, payload],
             };
         }
         case UPDATE_VEHICLE:
@@ -49,6 +51,21 @@ export default function vehiclesReducer(state = initialState, action) {
                     vehicle._id === payload._id ? { ...payload } : vehicle
                 ),
             };
+        case DELETE_VEHICLE:
+            console.log(payload);
+            return {
+                ...state,
+                loading: false,
+                vehicles: state.vehicles.filter(
+                    (vehicle) => vehicle._id !== payload
+                ),
+            };
+        case VEHICLES_ERROR: {
+            return {
+                ...state,
+                loading: false,
+            };
+        }
         default:
             return state;
     }

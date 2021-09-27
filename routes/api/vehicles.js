@@ -9,7 +9,9 @@ const { body, validationResult } = require("express-validator");
 router.get("/", async (req, res) => {
     try {
         console.log("GET api/vehicles");
-        const vehicles = await Vehicle.find().sort("-created");
+        const vehicles = await Vehicle.find().sort({
+            no: 1,
+        });
         res.json(vehicles);
     } catch (err) {
         console.error(err.message);

@@ -27,7 +27,7 @@ const style = {
     transform: "translate(-50%, -50%)",
     width: "50%",
     minWidth: 340,
-    minHeight: 500,
+    minHeight: 400,
     bgcolor: "background.paper",
     boxShadow: 24,
     p: 4,
@@ -106,7 +106,7 @@ function VehicleModal({
                             <AlertLayout type='vehicle_modal' />
                             <ModalHeader
                                 title={
-                                    isNew ? "Add New Vehicle" : "Edit vehicle"
+                                    isNew ? "Add New Vehicle" : "Edit Vehicle"
                                 }
                                 handleClose={handleClose}
                             />

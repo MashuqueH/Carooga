@@ -20,14 +20,14 @@ const AlertItem = ({ alert, removeAlert }) => {
         <Box sx={{ width: 1, m: 1 }}>
             <Collapse in={open}>
                 <Alert
+                    severity={alert.color}
                     action={
                         <IconButton
                             aria-label='close'
-                            color={alert.color}
-                            size='small'
+                            color='inherit'
                             onClick={handleClose}
                         >
-                            <CloseIcon fontSize='inherit' />
+                            <CloseIcon />
                         </IconButton>
                     }
                     sx={{ mb: 2 }}

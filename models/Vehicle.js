@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const AutoIncrement = require("mongoose-sequence")(mongoose);
 const Schema = mongoose.Schema;
 
 const VehicleSchema = new Schema({
@@ -27,9 +28,11 @@ const VehicleSchema = new Schema({
     },
     status: {
         type: String,
-        value: ['Live', 'Sold'],
-        default: 'Live',
+        value: ["Live", "Sold"],
+        default: "Live",
     },
 });
+
+VehicleSchema.plugin(AutoIncrement, { inc_field: "no" });
 
 module.exports = Vehicle = mongoose.model("vehicle", VehicleSchema);

@@ -12,8 +12,9 @@ import Toolbar from "@mui/material/Toolbar";
 import DrawerContainer from "./components/layout/drawer/DrawerContainer";
 
 import { getAllVehicles } from "./store/actions/vehicles";
+import VehiclesChart from "./components/vehicle/VehiclesChart";
 
-const drawerWidth = 300;
+const drawerWidth = 240;
 
 const App = ({ loading, vehicles, getAllVehicles }) => {
     useEffect(() => {
@@ -51,7 +52,6 @@ const App = ({ loading, vehicles, getAllVehicles }) => {
             <Box
                 component='nav'
                 sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-                aria-label='mailbox folders'
             >
                 <DrawerContainer
                     mobileOpen={mobileOpen}
@@ -59,8 +59,9 @@ const App = ({ loading, vehicles, getAllVehicles }) => {
                     drawerWidth={drawerWidth}
                 />
             </Box>
-            <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
+            <Box component='main' sx={{ flexGrow: 1, p: 1 }}>
                 <Toolbar />
+                <VehiclesChart vehicles={vehicles} />
                 <VehiclesTable vehicles={vehicles} />
             </Box>
         </Box>

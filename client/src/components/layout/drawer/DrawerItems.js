@@ -10,7 +10,7 @@ import Toolbar from "@mui/material/Toolbar";
 function DrawerItems(props) {
     return (
         <div>
-            <Toolbar />
+            <Toolbar sx={{ boxShadow: 3, background: "#1976d2" }} />
             <Divider />
             <List>
                 <ListItem button key='Inventory'>
