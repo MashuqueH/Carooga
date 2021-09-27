@@ -17,10 +17,9 @@ app.use("/api/vehicles", require("./routes/api/vehicles"));
 if (process.env.NODE_ENV === "production") {
     console.log("production");
     // Set static folder
-    const root = path.join(__dirname, "client", "build");
-    app.use(express.static(root));
+    app.use(express.static("client/build"));
     app.get("*", (req, res) => {
-        res.sendFile("index.html", { root });
+        res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
     });
 } else {
     console.log("dev");
