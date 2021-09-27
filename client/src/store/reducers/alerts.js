@@ -16,7 +16,7 @@ export default function alertsReducer(state = initialState, action) {
         case REMOVE_ALERT:
             return state.filter((alert) => alert.id !== payload);
         case REMOVE_ALERTS:
-            return state.filter((alert) => alert.type !== payload.type);
+            return state.filter((alert) => alert.type === payload.type);
         default:
             return state;
     }
